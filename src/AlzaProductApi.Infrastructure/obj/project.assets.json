@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {}
+    "net9.0": {
+      "AlzaProductApi.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/AlzaProductApi.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlzaProductApi.Core.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "AlzaProductApi.Core/1.0.0": {
+      "type": "project",
+      "path": "../AlzaProductApi.Core/AlzaProductApi.Core.csproj",
+      "msbuildProject": "../AlzaProductApi.Core/AlzaProductApi.Core.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net9.0": []
+    "net9.0": [
+      "AlzaProductApi.Core >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\ctibo\\.nuget\\packages\\": {},
@@ -39,7 +58,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Core\\AlzaProductApi.Core.csproj": {
+              "projectPath": "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Core\\AlzaProductApi.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

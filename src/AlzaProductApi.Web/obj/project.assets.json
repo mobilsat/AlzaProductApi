@@ -33,6 +33,29 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "AlzaProductApi.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/AlzaProductApi.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlzaProductApi.Core.dll": {}
+        }
+      },
+      "AlzaProductApi.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "AlzaProductApi.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AlzaProductApi.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AlzaProductApi.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -67,10 +90,22 @@
         "microsoft.openapi.1.6.17.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
+    },
+    "AlzaProductApi.Core/1.0.0": {
+      "type": "project",
+      "path": "../AlzaProductApi.Core/AlzaProductApi.Core.csproj",
+      "msbuildProject": "../AlzaProductApi.Core/AlzaProductApi.Core.csproj"
+    },
+    "AlzaProductApi.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../AlzaProductApi.Infrastructure/AlzaProductApi.Infrastructure.csproj",
+      "msbuildProject": "../AlzaProductApi.Infrastructure/AlzaProductApi.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "AlzaProductApi.Core >= 1.0.0",
+      "AlzaProductApi.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 9.0.11"
     ]
   },
@@ -106,7 +141,14 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Core\\AlzaProductApi.Core.csproj": {
+              "projectPath": "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Core\\AlzaProductApi.Core.csproj"
+            },
+            "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Infrastructure\\AlzaProductApi.Infrastructure.csproj": {
+              "projectPath": "D:\\Dokumenty - Ctibor\\projekty\\Alza\\AlzaProductApi\\src\\AlzaProductApi.Infrastructure\\AlzaProductApi.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
