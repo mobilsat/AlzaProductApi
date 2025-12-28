@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 
 
-namespace AlzaProductApi.Web.Controllers.V1;
+namespace AlzaProductApi.Web.Controllers.V2;
 
 [ApiController]
-[ApiVersion("1.0")]
+[ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/products")]
 public class ProductsController(IProductService productService) : ControllerBase
 {

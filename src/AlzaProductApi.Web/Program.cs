@@ -2,8 +2,14 @@ using AlzaProductApi.Core.Interfaces;
 using AlzaProductApi.Infrastructure.Data;
 using AlzaProductApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer; // because of IApiVersionDescriptionProvider
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using AlzaProductApi.Web.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // --------------------
 // Services
@@ -16,7 +22,27 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-builder.Services.AddOpenApi(); //  TODO ... now OK, Swagger later
+
+builder.Services
+	.AddApiVersioning(options =>
+	{
+		options.DefaultApiVersion = new ApiVersion(1, 0);
+		options.AssumeDefaultVersionWhenUnspecified = true;
+		options.ReportApiVersions = true;
+		options.ApiVersionReader = new UrlSegmentApiVersionReader();
+	})
+	.AddMvc()
+	.AddApiExplorer(options =>
+	{
+		options.GroupNameFormat = "'v'VVV";
+		options.SubstituteApiVersionInUrl = true;
+	});
+
+
+// Swagger
+builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
 
 // --------------------
 // Build
@@ -24,14 +50,24 @@ builder.Services.AddOpenApi(); //  TODO ... now OK, Swagger later
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+	var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+	app.UseSwagger();
+	app.UseSwaggerUI(options =>
+	{
+		foreach (var desc in apiVersionDescriptionProvider.ApiVersionDescriptions)
+		{
+			options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", desc.GroupName.ToUpperInvariant());
+		}
+	});
+}
+
 // --------------------
 // HTTP pipeline
 // --------------------
 
-if (app.Environment.IsDevelopment())
-{
-	app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 
