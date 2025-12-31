@@ -16,6 +16,11 @@ public class AppDbContext : DbContext
 	{
 		base.OnModelCreating(modelBuilder);
 
+		modelBuilder.Entity<Product>()
+			.Property(p => p.Price)
+			.HasPrecision(18, 2);
+
+
 		// Seed data
 		modelBuilder.Entity<Product>().HasData(
 			new Product { Id = 1, Name = "Product A", ImgUri = "https://example.com/a.jpg", Price = 10.99m, Description = "Sample product A" },
