@@ -27,3 +27,16 @@ src/
  ├─ AlzaProductApi.Web            // ASP.NET Core Web API (startup project)
  ├─ AlzaProductApi.Core           // Domain models, interfaces, services
  └─ AlzaProductApi.Infrastructure // EF Core, DbContext, repositories
+
+---
+
+## ▶️ Running the Application
+### 1️⃣ Configure database connection
+
+Edit appsettings.Development.json in **AlzaProductApi.Web**:
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=AlzaProductApi;Trusted_Connection=True;TrustServerCertificate=True"
+  }
+}
