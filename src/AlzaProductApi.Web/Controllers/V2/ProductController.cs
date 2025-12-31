@@ -1,9 +1,8 @@
-﻿using AlzaProductApi.Core.Dtos;
+﻿using Asp.Versioning;
+using AlzaProductApi.Core.Dtos;
 using AlzaProductApi.Core.Exceptions;
 using AlzaProductApi.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
-
 
 namespace AlzaProductApi.Web.Controllers.V2;
 
@@ -13,49 +12,43 @@ namespace AlzaProductApi.Web.Controllers.V2;
 public class ProductsController(IProductService productService) : ControllerBase
 {
 	/// <summary>
-	/// Returns all available products.
+	/// Returns products with pagination (default page size is 10).
+	/// Pagination metadata are returned in response headers.
 	/// </summary>
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetAll()
-	{
-		var products = await productService.GetProductsAsync();
-		return Ok(products);
-	}
-
-	/// <summary>
-	/// Returns a single product by its ID.
-	/// </summary>
-	[HttpGet("{id:int}")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<IActionResult> GetById(int id)
-	{
-		var product = await productService.GetProductByIdAsync(id);
-		return product is null ? NotFound() : Ok(product);
-	}
-
-	/// <summary>
-	/// Updates only the description of a product.
-	/// </summary>
-	[HttpPatch("{id:int}/description")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<IActionResult> UpdateDescription(int id, [FromBody] UpdateProductDescriptionDto dto)
+	public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
 	{
-		try
-		{
-			await productService.UpdateProductDescriptionAsync(id, dto.Description);
-			return NoContent();
-		}
-		catch (ProductNotFoundException)
-		{
-			return NotFound();
-		}
-		catch (ArgumentException ex)
-		{
-			return BadRequest(new { error = ex.Message });
-		}
+		if (page < 1 || pageSize < 1)
+			return BadRequest(new { error = "page and pageSize must be >= 1" });
+
+		var result = await productService.GetProductsPagedAsync(page, pageSize);
+
+		// Pagination headers (FE-friendly; remember to expose via CORS if needed)
+		Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
+		Response.Headers["X-Page"] = result.Page.ToString();
+		Response.Headers["X-Page-Size"] = result.PageSize.ToString();
+
+		// Optional: RFC 8288-ish Link header
+		var lastPage = (int)Math.Ceiling(result.TotalCount / (double)result.PageSize);
+		if (lastPage < 1) lastPage = 1;
+
+		var links = new List<string>();
+
+		string BaseUrl(int p) =>
+			Url.ActionLink(nameof(GetAll), values: new { version = "2.0", page = p, pageSize = result.PageSize })!;
+
+		if (result.Page > 1)
+			links.Add($"<{BaseUrl(result.Page - 1)}>; rel=\"prev\"");
+		if (result.Page < lastPage)
+			links.Add($"<{BaseUrl(result.Page + 1)}>; rel=\"next\"");
+
+		links.Add($"<{BaseUrl(1)}>; rel=\"first\"");
+		links.Add($"<{BaseUrl(lastPage)}>; rel=\"last\"");
+
+		Response.Headers["Link"] = string.Join(", ", links);
+
+		return Ok(result.Items);
 	}
 }
