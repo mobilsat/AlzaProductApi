@@ -1,36 +1,29 @@
 # AlzaProductApi
 
-This repository contains a .NET 8 Web API solution created as part of a coding assignment.
+> **Simple REST API for managing products**, implemented as a test assignment.
 
-The application provides:
-- A REST API exposing product data
-- API versioning (v1 and v2)
-- Partial update of product description
-- Pagination support in API v2
-- SQL database with seeded data
-- Unit tests
-- Complete Swagger documentation
+The solution demonstrates:
+
+- ✅ clean separation of layers (**Web / Core / Infrastructure**)
+- ✅ **API versioning** (v1, v2)
+- ✅ **paginated endpoints**
+- ✅ **Entity Framework Core** with SQL Server
+- ✅ **Swagger / OpenAPI** documentation
 
 ---
 
-## 📁 Solution Structure
+## 📦 Requirements
 
+- **.NET 8 SDK**
+- **SQL Server** (local instance or LocalDB)
+- **Visual Studio 2022** or **VS Code**
+
+---
+
+## 🧱 Solution Structure
+
+```text
 src/
-AlzaProductApi.Web/ # ASP.NET Core Web API
-AlzaProductApi.Core/ # Domain models, interfaces
-AlzaProductApi.Infrastructure/ # EF Core, repositories, DB
-tests/
-AlzaProductApi.Tests/ # Unit tests
-
-
----
-
-## 🛠 Requirements
-
-- .NET 8 SDK
-- SQL Server or LocalDB
-- Visual Studio (any edition) or VS Code
-
----
-
-A full README with run instructions and API examples will be added after implementation is complete.
+ ├─ AlzaProductApi.Web            // ASP.NET Core Web API (startup project)
+ ├─ AlzaProductApi.Core           // Domain models, interfaces, services
+ └─ AlzaProductApi.Infrastructure // EF Core, DbContext, repositories
