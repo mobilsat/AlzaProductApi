@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 //using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;

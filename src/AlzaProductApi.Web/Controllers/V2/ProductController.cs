@@ -1,6 +1,4 @@
 ﻿using Asp.Versioning;
-using AlzaProductApi.Core.Dtos;
-using AlzaProductApi.Core.Exceptions;
 using AlzaProductApi.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

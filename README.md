@@ -127,3 +127,10 @@ GET /api/v2/products?page=1&pageSize=5
 - **ASP.NET API Versioning**
 
 ---
+
+## ✅ Running Unit Tests
+
+PowerShell - from the root of the solution:
+```
+dotnet test
+```
