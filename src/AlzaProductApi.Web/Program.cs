@@ -11,11 +11,6 @@ using AlzaProductApi.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// --------------------
-// Services
-// --------------------
-
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -41,10 +36,6 @@ builder.Services
 	});
 
 
-// --------------------
-// Mock
-// --------------------
-
 var useMock = builder.Configuration.GetValue<bool>("UseMockRepository");
 
 if (useMock)
@@ -61,14 +52,8 @@ else
 }
 
 
-// Swagger
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
-
-// --------------------
-// Build
-// --------------------
 
 var app = builder.Build();
 
@@ -85,16 +70,7 @@ if (app.Environment.IsDevelopment())
 			options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", $"v{desc.ApiVersion}");
 		}
 	});
-
-	// TODO - testing output
-	foreach (var d in apiVersionDescriptionProvider.ApiVersionDescriptions)
-		Console.WriteLine($"Swagger group: {d.GroupName}, version: {d.ApiVersion}");
 }
-
-// --------------------
-// HTTP pipeline
-// --------------------
-
 
 app.UseHttpsRedirection();
 
