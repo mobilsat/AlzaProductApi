@@ -22,19 +22,20 @@ The solution demonstrates:
 
 ## 🧱 Solution Structure
 
-```
+```text
 src/
  ├─ AlzaProductApi.Web            // ASP.NET Core Web API (startup project)
  ├─ AlzaProductApi.Core           // Domain models, interfaces, services
  └─ AlzaProductApi.Infrastructure // EF Core, DbContext, repositories
- ```
+```
+
 ---
 
 ## ▶️ Running the Application
 ### 1️⃣ Configure database connection
 
 Edit appsettings.Development.json in **AlzaProductApi.Web**:
-```
+```json
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=localhost;Database=AlzaProductApi;Trusted_Connection=True;TrustServerCertificate=True"
@@ -131,6 +132,45 @@ GET /api/v2/products?page=1&pageSize=5
 ## ✅ Running Unit Tests
 
 PowerShell - from the root of the solution:
-```
+```powershell
 dotnet test
 ```
+
+---
+
+## ▶️ Running the Application (CLI)
+
+You can run the API either over **HTTP** or **HTTPS**, depending on the selected launch profile.
+
+### Run with HTTPS (recommended)
+
+```powershell
+dotnet run --project .\src\AlzaProductApi.Web --launch-profile https
+```
+
+Swagger UI will be available at:
+```
+https://localhost:7049/swagger
+```
+
+---
+
+### Run with HTTP
+
+```powershell
+dotnet run --project .\src\AlzaProductApi.Web --launch-profile http
+```
+
+Swagger UI will be available at:
+```
+http://localhost:5099/swagger
+```
+
+---
+
+### Notes
+
+- When running via Visual Studio, the selected launch profile is used automatically.
+- When running via dotnet CLI, the first profile in launchSettings.json is used unless --launch-profile is specified.
+
+---

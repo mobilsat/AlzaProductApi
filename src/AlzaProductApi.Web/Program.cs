@@ -81,9 +81,14 @@ if (app.Environment.IsDevelopment())
 	{
 		foreach (var desc in apiVersionDescriptionProvider.ApiVersionDescriptions)
 		{
-			options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", desc.GroupName.ToUpperInvariant());
+			//options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", desc.GroupName.ToUpperInvariant());
+			options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json", $"v{desc.ApiVersion}");
 		}
 	});
+
+	// TODO - testing output
+	foreach (var d in apiVersionDescriptionProvider.ApiVersionDescriptions)
+		Console.WriteLine($"Swagger group: {d.GroupName}, version: {d.ApiVersion}");
 }
 
 // --------------------
