@@ -1,7 +1,5 @@
 ﻿using AlzaProductApi.Core.Dtos;
 using AlzaProductApi.Core.Models;
-using global::AlzaProductApi.Core.Dtos;
-using global::AlzaProductApi.Core.Models;
 
 namespace AlzaProductApi.Core.Interfaces;
 

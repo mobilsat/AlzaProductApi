@@ -1,5 +1,4 @@
 ﻿using AlzaProductApi.Core.Dtos;
-using AlzaProductApi.Core.Exceptions;
 using AlzaProductApi.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
@@ -44,20 +43,9 @@ public class ProductsController(IProductService productService, IProductReadFaca
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> UpdateDescription(int id, [FromBody] UpdateProductDescriptionDto dto)
 	{
-		try
-		{
-			await productService.UpdateProductDescriptionAsync(id, dto.Description);
-			cacheFacade.InvalidateById(id);
-			cacheFacade.InvalidateAll();
-			return NoContent();
-		}
-		catch (ProductNotFoundException)
-		{
-			return NotFound();
-		}
-		catch (ArgumentException ex)
-		{
-			return BadRequest(new { error = ex.Message });
-		}
+		await productService.UpdateProductDescriptionAsync(id, dto.Description);
+		cacheFacade.InvalidateById(id);
+		cacheFacade.InvalidateAll();
+		return NoContent();
 	}
 }

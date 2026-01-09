@@ -1,13 +1,14 @@
 using AlzaProductApi.Core.Interfaces;
+using AlzaProductApi.Core.Services;
 using AlzaProductApi.Infrastructure.Data;
 using AlzaProductApi.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using AlzaProductApi.Web.Middleware;
+using AlzaProductApi.Web.Swagger;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer; // because of IApiVersionDescriptionProvider
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using AlzaProductApi.Web.Swagger;
-using AlzaProductApi.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +72,12 @@ if (app.Environment.IsDevelopment())
 		}
 	});
 }
+else
+{
+	app.UseHsts();
+}
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
