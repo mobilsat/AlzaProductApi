@@ -7,12 +7,8 @@ namespace AlzaProductApi.Web.Controllers.V2;
 [ApiController]
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/products")]
-public class ProductsController(IProductService productService) : ControllerBase
+public class ProductsController(IProductReadFacade products) : ControllerBase
 {
-	/// <summary>
-	/// Returns products with pagination (default page size is 10).
-	/// Pagination metadata are returned in response headers.
-	/// </summary>
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -21,21 +17,17 @@ public class ProductsController(IProductService productService) : ControllerBase
 		if (page < 1 || pageSize < 1)
 			return BadRequest(new { error = "page and pageSize must be >= 1" });
 
-		var result = await productService.GetProductsPagedAsync(page, pageSize);
+		var result = await products.GetPagedAsync(page, pageSize);
 
-		// Pagination headers (FE-friendly; remember to expose via CORS if needed)
 		Response.Headers["X-Total-Count"] = result.TotalCount.ToString();
 		Response.Headers["X-Page"] = result.Page.ToString();
 		Response.Headers["X-Page-Size"] = result.PageSize.ToString();
 
-		// Optional: RFC 8288-ish Link header
 		var lastPage = (int)Math.Ceiling(result.TotalCount / (double)result.PageSize);
 		if (lastPage < 1) lastPage = 1;
 
 		var links = new List<string>();
-
-		string BaseUrl(int p) =>
-			Url.ActionLink(nameof(GetAll), values: new { version = "2.0", page = p, pageSize = result.PageSize })!;
+		string BaseUrl(int p) => Url.ActionLink(nameof(GetAll), values: new { version = "2.0", page = p, pageSize = result.PageSize })!;
 
 		if (result.Page > 1)
 			links.Add($"<{BaseUrl(result.Page - 1)}>; rel=\"prev\"");

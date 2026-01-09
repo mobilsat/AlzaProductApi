@@ -13,7 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddSingleton<IProductCacheKeyRegistry, ProductCacheKeyRegistry>();
+builder.Services.AddScoped<IProductReadFacade, ProductReadFacade>();
 
 
 builder.Services

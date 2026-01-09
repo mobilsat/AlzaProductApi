@@ -10,7 +10,7 @@ namespace AlzaProductApi.Web.Controllers.V1;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/products")]
-public class ProductsController(IProductService productService) : ControllerBase
+public class ProductsController(IProductService productService, IProductReadFacade cacheFacade) : ControllerBase
 {
 	/// <summary>
 	/// Returns all available products.
@@ -47,6 +47,8 @@ public class ProductsController(IProductService productService) : ControllerBase
 		try
 		{
 			await productService.UpdateProductDescriptionAsync(id, dto.Description);
+			cacheFacade.InvalidateById(id);
+			cacheFacade.InvalidateAll();
 			return NoContent();
 		}
 		catch (ProductNotFoundException)
